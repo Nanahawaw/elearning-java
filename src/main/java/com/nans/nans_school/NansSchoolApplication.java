@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class NansSchoolApplication {
 
 	public static void main(String[] args) {
+	
 		SpringApplication.run(NansSchoolApplication.class, args);
 	}
 
