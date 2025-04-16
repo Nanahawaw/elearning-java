@@ -1,6 +1,6 @@
 package com.nans.nans_school.config;
 
-import com.nans.nans_school.repositories.UserRepository;
+import com.nans.nans_school.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

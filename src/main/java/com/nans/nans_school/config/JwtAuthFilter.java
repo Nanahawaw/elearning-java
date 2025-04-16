@@ -1,6 +1,6 @@
 package com.nans.nans_school.config;
 
-import com.nans.nans_school.service.JwtService;
+import com.nans.nans_school.auth.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
