@@ -4,6 +4,7 @@ import com.nans.nans_school.admin.request.InviteTutorRequest;
 import com.nans.nans_school.admin.response.TutorInviteResponse;
 import com.nans.nans_school.course.Course;
 import com.nans.nans_school.course.CourseRepository;
+import com.nans.nans_school.course.request.AssignCourseRequest;
 import com.nans.nans_school.course.request.CreateCourseRequest;
 import com.nans.nans_school.course.response.CourseCreationResponse;
 import com.nans.nans_school.user.User;
@@ -89,7 +90,10 @@ courseRepository.save(course);
 
     }
 
+
+
     private String generatePassword() {
         return UUID.randomUUID().toString().substring(0, 8);
     }
+
 }

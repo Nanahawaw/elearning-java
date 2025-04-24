@@ -1,7 +1,8 @@
 package com.nans.nans_school.course;
 
+import com.nans.nans_school.course.request.UpdateCourseRequest;
 import com.nans.nans_school.course.response.GetCourseResponse;
-import com.nans.nans_school.utils.CourseMapper;
+import com.nans.nans_school.utils.mapper.CourseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,37 @@ public class CourseService {
     }
 
     public List<GetCourseResponse> findCoursesByTutorId(Long tutorId){
-        log.info("Fetching courses for tutor with ID: {}", tutorId);
         List<Course> courses = courseRepository.findByTutorId(tutorId);
-        log.info("Found {} courses", courses.size());
         return courses.stream().map(CourseMapper::courseResponse).collect(Collectors.toList());
+    }
+
+    public String publishUnpublishCourse(int CourseId, boolean publish){
+
+        Course course = courseRepository.findById(CourseId).orElseThrow(() -> new RuntimeException("Course not found"));
+        course.setPublished(publish);
+courseRepository.save(course);
+return publish? "Published" : "Unpublished";
+
+    }
+
+  public  GetCourseResponse updateCourse(int CourseId, UpdateCourseRequest request){
+
+        Course course = courseRepository.findById(CourseId).orElseThrow(() -> new RuntimeException("Course not found"));
+
+
+    course.setTitle(request.getTitle());
+    course.setDescription(request.getDescription());
+    course.setPrice(request.getPrice());
+    course.setTutor(course.getTutor());
+
+    Course updatedCourse = courseRepository.save(course);
+
+    return CourseMapper.courseResponse(updatedCourse);
+    }
+
+    public String DeleteCourse(int CourseId){
+
+        courseRepository.deleteById(CourseId);
+        return "Deleted";
     }
 }

@@ -1,4 +1,4 @@
-package com.nans.nans_school.utils;
+package com.nans.nans_school.utils.mapper;
 
 import com.nans.nans_school.course.Course;
 import com.nans.nans_school.course.response.GetCourseResponse;
