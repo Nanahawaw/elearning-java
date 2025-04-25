@@ -2,6 +2,7 @@ package com.nans.nans_school.course;
 
 import com.nans.nans_school.course.request.UpdateCourseRequest;
 import com.nans.nans_school.course.response.GetCourseResponse;
+import com.nans.nans_school.utils.exceptions.NotFoundException;
 import com.nans.nans_school.utils.mapper.CourseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,13 +27,14 @@ public class CourseService {
     }
 
     public List<GetCourseResponse> findCoursesByTutorId(Long tutorId){
+
         List<Course> courses = courseRepository.findByTutorId(tutorId);
         return courses.stream().map(CourseMapper::courseResponse).collect(Collectors.toList());
     }
 
     public String publishUnpublishCourse(int CourseId, boolean publish){
 
-        Course course = courseRepository.findById(CourseId).orElseThrow(() -> new RuntimeException("Course not found"));
+        Course course = courseRepository.findById(CourseId).orElseThrow(() -> new NotFoundException("Course not found"));
         course.setPublished(publish);
 courseRepository.save(course);
 return publish? "Published" : "Unpublished";
@@ -41,7 +43,7 @@ return publish? "Published" : "Unpublished";
 
   public  GetCourseResponse updateCourse(int CourseId, UpdateCourseRequest request){
 
-        Course course = courseRepository.findById(CourseId).orElseThrow(() -> new RuntimeException("Course not found"));
+        Course course = courseRepository.findById(CourseId).orElseThrow(() -> new NotFoundException("Course not found"));
 
 
     course.setTitle(request.getTitle());

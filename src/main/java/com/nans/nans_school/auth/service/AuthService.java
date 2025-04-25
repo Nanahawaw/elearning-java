@@ -4,7 +4,7 @@ import com.nans.nans_school.auth.request.LoginRequest;
 import com.nans.nans_school.auth.request.RegisterRequest;
 import com.nans.nans_school.user.User;
 import com.nans.nans_school.utils.enums.Role;
-import com.nans.nans_school.utils.exceptions.EmailAlreadyExistsException;
+import com.nans.nans_school.utils.exceptions.DuplicateException;
 import com.nans.nans_school.utils.exceptions.InvalidCredentialsException;
 import com.nans.nans_school.user.UserRepository;
 import com.nans.nans_school.auth.response.AuthenticationResponse;
@@ -34,7 +34,7 @@ public class AuthService {
                .role(Role.STUDENT)
                .build();
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new EmailAlreadyExistsException("Email already exists");
+            throw new DuplicateException("Email already exists");
         }
        userRepository.save(user);
        var jwtToken = jwtService.generateToken(user);

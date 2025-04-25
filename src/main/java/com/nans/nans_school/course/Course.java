@@ -20,6 +20,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(unique = true)
     @NotNull
     private String title;
 

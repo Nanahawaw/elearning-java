@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface CourseModuleRepository extends JpaRepository<CourseModule, Integer> {
     List<CourseModule> findByCourseId(int courseId);
-
+boolean existsByTitle(String title);
 
 }

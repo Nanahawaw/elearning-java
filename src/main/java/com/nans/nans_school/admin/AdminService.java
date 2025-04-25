@@ -10,13 +10,15 @@ import com.nans.nans_school.course.response.CourseCreationResponse;
 import com.nans.nans_school.user.User;
 import com.nans.nans_school.user.UserRepository;
 import com.nans.nans_school.utils.enums.Role;
-import com.nans.nans_school.utils.exceptions.EmailAlreadyExistsException;
+import com.nans.nans_school.utils.exceptions.DuplicateException;
+import com.nans.nans_school.utils.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.apache.logging.log4j.util.InternalException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.UUID;
 
 @Service
@@ -27,7 +29,7 @@ public class AdminService {
     private final CourseRepository courseRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public TutorInviteResponse tutorInvitation ( InviteTutorRequest request) throws BadRequestException, EmailAlreadyExistsException {
+    public TutorInviteResponse tutorInvitation ( InviteTutorRequest request) throws BadRequestException{
 
         //validate the request
 
@@ -36,7 +38,7 @@ public class AdminService {
         }
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new EmailAlreadyExistsException("User already exists");
+            throw new DuplicateException("User already exists");
 
         }
         String randomPassword = generatePassword();
@@ -63,14 +65,18 @@ public class AdminService {
     }
 
 
-    public CourseCreationResponse createCourse (CreateCourseRequest request) throws BadRequestException{
+    public CourseCreationResponse createCourse (CreateCourseRequest request) throws AccessDeniedException {
 
         User tutor = userRepository.findById(request.getTutorId())
-                .orElseThrow(() -> new BadRequestException("User does not exist"));
+                .orElseThrow(() -> new NotFoundException("User does not exist"));
 
         if(tutor.getRole() != Role.TUTOR){
-            throw new BadRequestException("You are not allowed to add course");
+            throw new AccessDeniedException("Only users with TUTOR role can add courses");
         }
+
+if(courseRepository.existsByTitle(request.getTitle())){
+    throw new DuplicateException("Course already exists");
+}
 
         Course course = new Course();
 

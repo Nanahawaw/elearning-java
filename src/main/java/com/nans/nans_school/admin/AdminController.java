@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
+
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
@@ -38,7 +40,7 @@ public class AdminController {
             @Valid
             @RequestBody
             CreateCourseRequest request
-    ) throws BadRequestException {
+    ) throws  AccessDeniedException {
         return ResponseEntity.ok(adminService.createCourse(request));
     }
 
